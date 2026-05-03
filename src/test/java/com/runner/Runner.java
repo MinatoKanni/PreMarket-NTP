@@ -51,7 +51,8 @@ import io.cucumber.junit.CucumberOptions;
 				"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:",
 				
 				"html:target/HtmlReports1/report.html", "json:target/JSONReports/report.json",
-				"junit:target/JUnitReports/report.xml" }
+				"junit:target/JUnitReports/report.xml",
+				"junit:target/surefire-reports/cucumber-junit.xml" }
                   )
 
 
