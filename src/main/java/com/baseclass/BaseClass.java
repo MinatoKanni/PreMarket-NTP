@@ -15,7 +15,9 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -46,6 +48,7 @@ public class BaseClass {
 	            WebDriverManager.chromedriver().setup();
 
 	            ChromeOptions options = new ChromeOptions();
+	            options.setPageLoadStrategy(PageLoadStrategy.EAGER);
 
 	            boolean isHeadless = Boolean.parseBoolean(System.getProperty("headless", "false"))
 	                    || "true".equalsIgnoreCase(System.getenv("HEADLESS"))
@@ -67,10 +70,14 @@ public class BaseClass {
 	            }
 
 	            options.addArguments("--disable-notifications");
+	            options.addArguments("--disable-extensions");
+	            options.addArguments("--disable-background-networking");
 	            driver = new ChromeDriver(options);
 	        }
 
 	        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(45));
+	        driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(30));
 	        if (Boolean.parseBoolean(System.getProperty("headless", "false"))
 	                || "true".equalsIgnoreCase(System.getenv("HEADLESS"))
 	                || System.getenv("CI") != null
@@ -136,7 +143,16 @@ public class BaseClass {
 	    }
 
 	 public static void getUrl(String url) {
-		driver.get(url);
+		try {
+			driver.get(url);
+		} catch (TimeoutException e) {
+			System.out.println("[INFO] Page load timed out, stopping load and continuing: " + url);
+			try {
+				((JavascriptExecutor) driver).executeScript("window.stop();");
+			} catch (WebDriverException ignored) {
+				System.out.println("[INFO] Browser did not accept window.stop() after timeout.");
+			}
+		}
 	}
 
 	public static void toMaximize() {

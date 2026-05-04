@@ -103,7 +103,6 @@ public class ScreenShort extends BaseClass {
 	                )
 	            );
 	            System.out.println("[INFO] Page ready.");
-	            driver.navigate().refresh();
 
 	        } catch (Exception e) {
 	            System.out.println("[INFO] waitForPageReady timed out, proceeding: " + e.getMessage());
@@ -112,7 +111,7 @@ public class ScreenShort extends BaseClass {
 	    
 	    @When("Navigate to home page")
 	    public void navigate_to_home_page() {
-	        driver.get("https://web.navia.co.in/index.php");
+	        getUrl("https://web.navia.co.in/index.php");
 	        waitForPageReady();
 	    }
 

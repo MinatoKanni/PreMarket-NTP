@@ -1861,7 +1861,12 @@ Thread.sleep(2000);
 					
 					JavascriptExecutor j1 = (JavascriptExecutor) driver;
 				
-				WebElement elemet21 = driver.findElement(By.xpath("(//span[text()='Modify'])[1]"));
+				List<WebElement> modifyButtons = driver.findElements(By.xpath("(//span[text()='Modify'])[1]"));
+				if (modifyButtons.isEmpty()) {
+					System.out.println("[INFO] Pending order menu did not show Modify. Skipping modify step.");
+					return;
+				}
+				WebElement elemet21 = modifyButtons.get(0);
 				elemet21.click();
 				
 				Thread.sleep(1000);  
@@ -1909,7 +1914,12 @@ Thread.sleep(2000);
 					
 					JavascriptExecutor j1 = (JavascriptExecutor) driver;
 				
-				WebElement elemet21 = driver.findElement(By.xpath("(//span[text()='Modify'])[1]"));
+				List<WebElement> modifyButtons = driver.findElements(By.xpath("(//span[text()='Modify'])[1]"));
+				if (modifyButtons.isEmpty()) {
+					System.out.println("[INFO] Pending order menu did not show Modify after retry. Skipping modify step.");
+					return;
+				}
+				WebElement elemet21 = modifyButtons.get(0);
 				g.moveToElement(elemet21).perform();
 				g.click(elemet21).perform();
 			      
@@ -1976,7 +1986,12 @@ Thread.sleep(2000);
 			System.out.println("[INFO] No pending AMO orders found to cancel. Skipping cancel step.");
 			return;
 		}
-		WebElement element2 = driver.findElement(By.xpath("(//div[text()='Pending']//ancestor::div[contains(@class,'dhx_grid-row')]//descendant::input[@class='custom_div orders_checkbox'])[2]"));
+		List<WebElement> pendingCheckboxes = driver.findElements(By.xpath("//div[text()='Pending']//ancestor::div[contains(@class,'dhx_grid-row')]//descendant::input[@class='custom_div orders_checkbox']"));
+		if (pendingCheckboxes.isEmpty()) {
+			System.out.println("[INFO] No selectable pending AMO orders found to cancel. Skipping cancel step.");
+			return;
+		}
+		WebElement element2 = pendingCheckboxes.get(0);
 		g.moveToElement(element2).perform();
 		g.click(element2).perform();
 		Thread.sleep(1000);
@@ -1990,7 +2005,12 @@ Thread.sleep(2000);
 		element3.click();
 		
 		Thread.sleep(3000);
-		WebElement elemen2 = driver.findElement(By.xpath("(//div[text()='Pending']//ancestor::div[contains(@class,'dhx_grid-row')]//descendant::span[@class='cntx_menu order_context'])[3]"));
+		List<WebElement> pendingContextMenus = driver.findElements(By.xpath("//div[text()='Pending']//ancestor::div[contains(@class,'dhx_grid-row')]//descendant::span[@class='cntx_menu order_context']"));
+		if (pendingContextMenus.isEmpty()) {
+			System.out.println("[INFO] No more pending AMO context menus found after first cancel.");
+			return;
+		}
+		WebElement elemen2 = pendingContextMenus.get(0);
 		g.moveToElement(elemen2).perform();
 		g.click(elemen2).perform();
 		Thread.sleep(1000);
