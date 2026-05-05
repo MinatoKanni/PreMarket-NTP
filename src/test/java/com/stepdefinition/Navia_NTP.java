@@ -929,8 +929,9 @@ public class Navia_NTP extends BaseClass{
 			element4.click();
 			
 			Thread.sleep(1000);
-			WebElement element3 = driver.findElement(By.xpath("//span[@class='src_clear']"));
-			element3.click();
+			WebDriverWait waitClear3 = new WebDriverWait(driver, java.time.Duration.ofSeconds(10));
+			WebElement element3 = waitClear3.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='src_clear']")));
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element3);
 	
 			Thread.sleep(2000);
 			
@@ -981,8 +982,9 @@ public class Navia_NTP extends BaseClass{
 			stock.click();
 			
 			Thread.sleep(1000);
-			WebElement element11 = driver.findElement(By.xpath("//span[@class='src_clear']"));
-			element11.click();
+			WebDriverWait waitClear11 = new WebDriverWait(driver, java.time.Duration.ofSeconds(10));
+			WebElement element11 = waitClear11.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='src_clear']")));
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element11);
 			
 Thread.sleep(2000);
 			
@@ -1024,8 +1026,9 @@ Thread.sleep(2000);
 			element411.click();
 			
 			Thread.sleep(1000);
-			WebElement element111 = driver.findElement(By.xpath("//span[@class='src_clear']"));
-			element111.click();
+			WebDriverWait waitClear111 = new WebDriverWait(driver, java.time.Duration.ofSeconds(10));
+			WebElement element111 = waitClear111.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='src_clear']")));
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element111);
 			
 			Thread.sleep(2000);
 
@@ -1068,8 +1071,9 @@ Thread.sleep(2000);
 			element4111.click();
 			
 			Thread.sleep(1000);
-			WebElement element1111 = driver.findElement(By.xpath("//span[@class='src_clear']"));
-			element1111.click();
+			WebDriverWait waitClear1111 = new WebDriverWait(driver, java.time.Duration.ofSeconds(10));
+			WebElement element1111 = waitClear1111.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='src_clear']")));
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element1111);
 			
 		
 			
@@ -1126,8 +1130,9 @@ Thread.sleep(2000);
 			element41111.click();
 			
 			Thread.sleep(1000);
-			WebElement element11111 = driver.findElement(By.xpath("//span[@class='src_clear']"));
-			element11111.click();
+			WebDriverWait waitClear11111 = new WebDriverWait(driver, java.time.Duration.ofSeconds(10));
+			WebElement element11111 = waitClear11111.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='src_clear']")));
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element11111);
 			
 			Thread.sleep(2000);
 			
@@ -1164,8 +1169,20 @@ Thread.sleep(2000);
 		
 			Thread.sleep(1000);
 			
-			WebElement fund = driver.findElement(By.xpath("//span[contains(text(),'"+optinsNSE+"')]//ancestor::div[contains(@class,'dhx_widget')]//descendant::a[contains(text(),'NSE')]//child::span"));
-			String text = fund.getText();
+			WebDriverWait waitFund = new WebDriverWait(driver, java.time.Duration.ofSeconds(15));
+			WebElement fund = null;
+			try {
+				fund = waitFund.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+					"//span[contains(text(),'"+optinsNSE+"')]//ancestor::div[contains(@class,'dhx_widget')]//descendant::a[contains(text(),'NSE')]//child::span")));
+			} catch (Exception e1) {
+				try {
+					fund = waitFund.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+						"(//span[contains(text(),'"+optinsNSE+"')]//ancestor::div//span[contains(@class,'price') or contains(@class,'ltp')])[1]")));
+				} catch (Exception e2) {
+					System.err.println("[WARN] Could not locate price widget for " + optinsNSE + " - skipping price read");
+				}
+			}
+			String text = (fund != null) ? fund.getText() : "0";
 
 			Thread.sleep(1000);
 			

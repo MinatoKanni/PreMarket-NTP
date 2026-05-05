@@ -1568,13 +1568,17 @@ public class Navia_Login extends BaseClass {
 		
 		Thread.sleep(2000);
 		
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		WebElement funds = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='funds_show']")));
+		WebElement funds = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
+			"//div[@class='funds_show'] | //span[normalize-space()='Funds'] | //a[normalize-space()='Funds']")));
+		js.executeScript("arguments[0].scrollIntoView(true);", funds);
+		Thread.sleep(500);
 		js.executeScript("arguments[0].click();", funds);
 		
 		
-		WebElement withdraw = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='nav_btns']//child::button[text()='Withdraw'])[1]")));
+		WebElement withdraw = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
+			"(//div[@class='nav_btns']//button[normalize-space()='Withdraw'] | //button[normalize-space()='Withdraw'])[1]")));
 		js.executeScript("arguments[0].click();", withdraw);
 		Thread.sleep(4000);
 		

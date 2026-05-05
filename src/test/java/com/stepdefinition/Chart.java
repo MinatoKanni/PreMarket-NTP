@@ -218,6 +218,15 @@ public class Chart extends BaseClass {
 				System.out.println("[INFO] Chart locator not clickable yet: " + locator);
 			}
 		}
+		// Final fallback: broader search for any chart trigger element near the stock
+		try {
+			WebElement broadChart = wait.until(ExpectedConditions.elementToBeClickable(
+				By.xpath("(//span[contains(text(),'" + lookup + "')]//ancestor::*[contains(@class,'row') or contains(@class,'item') or contains(@class,'list')][1]//descendant::*[contains(@class,'chart') or @title='Chart' or @aria-label='Chart'])[1]")));
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", broadChart);
+			return;
+		} catch (Exception eFinal) {
+			System.err.println("[WARN] All chart locators exhausted for: " + symbol);
+		}
 		throw new org.openqa.selenium.NoSuchElementException("Chart icon not found for: " + symbol);
 	}
 

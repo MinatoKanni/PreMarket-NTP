@@ -91,7 +91,7 @@ public class Login_Page extends BaseClass {
 		
 		driver.findElement(By.xpath("//input[@name='lPassword']")).click();
 		sleep(1000);
-		driver.findElement(By.xpath("//input[@name='lPassword']")).sendKeys("Testing@123");
+		driver.findElement(By.xpath("//input[@name='lPassword']")).sendKeys("Navia@111");
 		sleep(1000);
 		
 
